@@ -6,7 +6,7 @@ pet = {
             "type": "integer"
         },
         "name": {
-            "type": "integer"
+            "type": "string"  # : Changed from "integer" to "string"
         },
         "type": {
             "type": "string",
@@ -16,5 +16,24 @@ pet = {
             "type": "string",
             "enum": ["available", "sold", "pending"]
         },
+    }
+}
+
+
+# Add Order schema
+order = {
+    "type": "object",
+    "required": ["id", "pet_id"],
+    "properties": {
+        "id": {
+            "type": "string"  # UUID string
+        },
+        "pet_id": {
+            "type": "integer"
+        },
+        "status": {
+            "type": "string",
+            "enum": ["available", "sold", "pending"]
+        }
     }
 }

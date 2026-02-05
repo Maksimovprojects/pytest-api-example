@@ -1,0 +1,13 @@
+1) Bug #1 line9/schemas.py : Bug in schema declaration "name": {"type": "integer"}  ->  Should be "string" datatype
+    It caused  ValidationError is case or running GET call for test "test_pet_schema()""
+
+2) Bug #2: line101/app.py : missing f-sting for placeholder
+
+3) Bug #4: Missing enum validation in POST call /pets/ The API accepts pets with invalid enum values like:
+    type': 'bird', 'status': 'reserved' in payload.
+   That why they 2 last tests fail:
+   test_pet.py::test_create_pet_invalid_enum_400[pet_data0]
+   test_pet.py::test_create_pet_invalid_enum_400[pet_data1]
+   Marked by xfail marker
+
+4) I'd  all tests to test Class to run all together or added specific pytest test marker
