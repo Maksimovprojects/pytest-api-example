@@ -5,4 +5,19 @@ pet_scratch.py
 store_scratch.py
 report.html
 style.css
-.idea
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
