@@ -16,3 +16,8 @@ def post_api_data(endpoint, data):
 def patch_api_data(endpoint, data):
     response = requests.patch(f'{base_url}{endpoint}', json=data)
     return response
+
+# DELETE requests
+def delete_api_data(endpoint):
+    response = requests.delete(f'{base_url}{endpoint}')
+    return response

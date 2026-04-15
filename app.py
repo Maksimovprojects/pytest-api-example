@@ -161,10 +161,19 @@ class OrderUpdateResource(Resource):
         elif update_data['status'] == 'available':
             pet['status'] = 'available'
         else:
-            api.abort(400, f"Invalid status '{update_data['status']}'. Valid statuses are {', '.join(PET_STATUS)}")
-
+            api.abort(400, f"Invalid status '{update_data['status']}'. Valid statuses are {', '.join(PET_STATUS)}")\
 
         return {"message": "Order and pet status updated successfully"}
+
+    # ADDED: DELETE /store/order/<order_id>
+    @store_ns.doc('delete_order')
+    @store_ns.response(200, 'Order deleted')
+    def delete(self, order_id):
+        """Delete an order by id"""
+        if order_id not in orders:
+            api.abort(404, "Order not found")
+        del orders[order_id]
+        return {"message": f"Order {order_id} deleted successfully"}
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -21,3 +21,9 @@ ENV/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Ignore html report
+*.html
+reports/
+playwright-report/
+allure-results/

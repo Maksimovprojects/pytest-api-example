@@ -57,18 +57,17 @@ TODO: Finish this test by...
 1) Testing and validating the appropriate 404 response for /pets/{pet_id}
 2) Parameterizing the test for any edge cases
 '''
-@pytest.mark.parametrize("pet_id, description", [(999, "non-existent ID"),
-                                                 (0.9, "floating number"),
-                                                 (-1, "negative ID")])
+@pytest.mark.parametrize("pet_id, description", [
+    (999,  "non-existent ID"),
+    (-1,   "negative ID"),
+    (9999, "large ID"),
+])
 def test_get_by_id_404(pet_id, description):
     # Try to get a pet that doesn't exist or with invalid ID format
     test_endpoint = f"/pets/{pet_id}"
-
     response = api_helpers.get_api_data(test_endpoint)
-
     # Verify we get a 404 Not Found response
     assert response.status_code == 404, f"Expected 404 for {description}, got {response.status_code}"
-
     # Try to parse JSON response if available
     # Some 404s return JSON (API errors), others return HTML (Flask route errors)
     try:

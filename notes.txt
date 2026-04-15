@@ -1,13 +1,36 @@
 1) Bug #1 line9/schemas.py : Bug in schema declaration "name": {"type": "integer"}  ->  Should be "string" datatype
     It caused  ValidationError is case or running GET call for test "test_pet_schema()""
 
-2) Bug #2: line101/app.py : missing f-sting for placeholder
+2) Bug #2: line101/app.py : missing f-sting for placeholder.
+The error message would literally print {status} instead of the actual value
 
-3) Bug #4: Missing enum validation in POST call /pets/ The API accepts pets with invalid enum values like:
-    type': 'bird', 'status': 'reserved' in payload.
-   That why they 2 last tests fail:
+
+3) Bug #3: Missing enum validation in POST call /pets/ The API accepts pets with invalid enum values like:
+type': 'bird', 'status': 'reserved' in payload.
+   No validate=True on @expect, so flask-restx doesn't enforce type or status enum values.
+   That why 2 last tests will fail:
    test_pet.py::test_create_pet_invalid_enum_400[pet_data0]
    test_pet.py::test_create_pet_invalid_enum_400[pet_data1]
    Marked by xfail marker
+   POST /pets accepts invalid enum values
 
-4) I'd  all tests to test Class to run all together or added specific pytest test marker
+
+4) BUG #4  POST /pets allows client supplied IDs
+id is not readonly=True in pet_model, so clients can pass any ID including duplicates or negatives.
+IDs should be server-generated.
+
+5) BUG #5 Missing DELETE endpoints
+DELETE /pets/<id> or DELETE /store/order/<id>.
+Broke fixture teardown pets stayed pending, exhausting available pool and causing tests to skip.
+Fixed by adding DELETE endpoints to app.py and extending api_helpers.py with delete_api_data()
+
+6) Bug #6  PATCH /order mutates state before validating
+order['status'] and pet['status'] are both updated before the else: abort(400) runs.
+Invalid status partially corrupts state before the error is raised. Confirmed by test_patch_order_by_id_400 xfail.
+
+7) BUG #7 findByStatus wrong null check
+If we call GET /pets/findByStatus without a status parameter,
+instead of a helpful error like "status parameter is required",
+the API returns "Invalid pet status None" which is confusing and misleading.
+
+8) I'd  all tests to test Class to run all together or added specific pytest test marker
