@@ -24,10 +24,10 @@ jobs:
           sleep 2
 
       - name: Run tests
-        run: pytest test_pet.py test_store.py -v --junitxml=pytest-report.xml
+        run: pytest test_pet.py test_store.py -v --html=report.html --self-contained-html
 
-      - name: Upload test results
+      - name: Upload HTML report
         uses: actions/upload-artifact@v4
         with:
-          name: pytest-report
-          path: pytest-report.xml
+          name: pytest-html-report
+          path: report.html
